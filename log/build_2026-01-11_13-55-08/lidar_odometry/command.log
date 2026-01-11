@@ -1,6 +1,0 @@
-Invoking command in '/home/pi/ros2_lidar/build/lidar_odometry': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy /usr/bin/cmake /home/pi/ros2_lidar/src/simple_2d_lidar_odometry -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/pi/ros2_lidar/install/lidar_odometry
-Invoked command in '/home/pi/ros2_lidar/build/lidar_odometry' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy /usr/bin/cmake /home/pi/ros2_lidar/src/simple_2d_lidar_odometry -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/pi/ros2_lidar/install/lidar_odometry
-Invoking command in '/home/pi/ros2_lidar/build/lidar_odometry': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy /usr/bin/cmake --build /home/pi/ros2_lidar/build/lidar_odometry -- -j4 -l4
-Invoked command in '/home/pi/ros2_lidar/build/lidar_odometry' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy /usr/bin/cmake --build /home/pi/ros2_lidar/build/lidar_odometry -- -j4 -l4
-Invoking command in '/home/pi/ros2_lidar/build/lidar_odometry': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy /usr/bin/cmake --install /home/pi/ros2_lidar/build/lidar_odometry
-Invoked command in '/home/pi/ros2_lidar/build/lidar_odometry' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy /usr/bin/cmake --install /home/pi/ros2_lidar/build/lidar_odometry

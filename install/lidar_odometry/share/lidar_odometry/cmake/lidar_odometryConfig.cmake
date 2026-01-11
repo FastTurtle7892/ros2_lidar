@@ -1,1 +1,0 @@
-/home/pi/ros2_lidar/build/lidar_odometry/ament_cmake_core/lidar_odometryConfig.cmake
