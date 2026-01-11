@@ -14,3 +14,13 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 source /opt/ros/jazzy/setup.bash (폭스글러브로 테스트)
 ros2 run rviz2 rviz2
+
+----------------------------------------
+
+source /opt/ros/jazzy/setup.bash
+colcon build --symlink-install
+source ~/ros2_ws/install/setup.bash
+ros2 launch bringup_launch.py
+
+source /opt/ros/jazzy/setup.bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
