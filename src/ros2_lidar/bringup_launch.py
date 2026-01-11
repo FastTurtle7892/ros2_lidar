@@ -16,16 +16,33 @@ def generate_launch_description():
 
     # [추가] Lidar Odometry 실행 (휠 오도메트리 대신 사용)
     # package 이름은 package.xml에 명시된 'lidar_odometry'를 사용합니다.
-    lidar_odometry_node = Node(
-        package='lidar_odometry',
-        executable='lidar_odometry_node',
+    # lidar_odometry_node = Node(
+    #     package='lidar_odometry',
+    #     executable='lidar_odometry_node',
+    #     output='screen',
+    #     parameters=[{
+    #         'scan_topic_name': '/scan',
+    #         'odom_topic_name': '/odom',
+    #         'maximum_iterations': 10,           # [수정] 30 -> 10 (속도 향상)
+    #         'max_correspondence_distance': 0.3  # [수정] 1.0 -> 0.3 (회전 정밀도 향상)
+    #     }]
+    # )
+
+    # [변경 후] rf2o_laser_odometry 노드 추가
+    rf2o_node = Node(
+        package='rf2o_laser_odometry',
+        executable='rf2o_laser_odometry_node',
+        name='rf2o_laser_odometry',
         output='screen',
         parameters=[{
-            'scan_topic_name': '/scan',
-            'odom_topic_name': '/odom',
-            'maximum_iterations': 10,           # [수정] 30 -> 10 (속도 향상)
-            'max_correspondence_distance': 0.3  # [수정] 1.0 -> 0.3 (회전 정밀도 향상)
-        }]
+            'laser_scan_topic': '/scan',      # 라이다 토픽 이름
+            'odom_topic': '/odom',            # 발행할 오도메트리 토픽
+            'publish_tf': True,               # TF(odom->base_link) 발행 여부 (필수: True)
+            'base_frame_id': 'base_link',     # 로봇 몸체 프레임
+            'odom_frame_id': 'odom',          # 오도메트리 프레임
+            'init_pose_from_topic': '',       # 초기 위치 설정 (비워둠)
+            'freq': 10.0                      # 발행 주파수 (Hz) -> 높을수록 반응이 빠름
+        }],
     )
 
     # 2. SLAM (설정 파일 적용!)
@@ -76,7 +93,8 @@ def generate_launch_description():
 
     return LaunchDescription([
         rplidar_launch,
-        lidar_odometry_node, # 추가된 노드 등록
+        # lidar_odometry_node, # 추가된 노드 등록
+        rf2o_node,  # <--- 여기에 추가!
         slam_launch,
         robot_state_publisher,
         motor_driver,
