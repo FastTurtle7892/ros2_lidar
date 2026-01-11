@@ -1,0 +1,16 @@
+# 1. 라이다 권한
+sudo chmod 666 /dev/ttyUSB0
+
+# 2. ROS 활성화 (중요!)
+source /opt/ros/jazzy/setup.bash
+
+# 3. 폴더 이동 및 실행
+cd ~/my_robot
+ros2 launch bringup_launch.py
+
+
+source /opt/ros/jazzy/setup.bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+
+source /opt/ros/jazzy/setup.bash (폭스글러브로 테스트)
+ros2 run rviz2 rviz2
