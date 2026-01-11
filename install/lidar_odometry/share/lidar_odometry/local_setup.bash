@@ -1,0 +1,1 @@
+/home/pi/ros2_lidar/build/lidar_odometry/ament_cmake_environment_hooks/local_setup.bash

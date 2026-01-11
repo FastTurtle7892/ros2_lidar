@@ -1,0 +1,26 @@
+[1.968s] Invoking command in '/home/pi/ros2_lidar/build/ros2_lidar': PYTHONPATH=/home/pi/ros2_lidar/build/ros2_lidar/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pi/ros2_lidar/install/ros2_lidar/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/pi/ros2_lidar/build/ros2_lidar/build --no-deps symlink_data
+[2.389s] running develop
+[2.635s] running egg_info
+[2.635s] creating ros2_lidar.egg-info
+[2.657s] writing ros2_lidar.egg-info/PKG-INFO
+[2.658s] writing dependency_links to ros2_lidar.egg-info/dependency_links.txt
+[2.658s] writing entry points to ros2_lidar.egg-info/entry_points.txt
+[2.658s] writing requirements to ros2_lidar.egg-info/requires.txt
+[2.658s] writing top-level names to ros2_lidar.egg-info/top_level.txt
+[2.658s] writing manifest file 'ros2_lidar.egg-info/SOURCES.txt'
+[2.704s] reading manifest file 'ros2_lidar.egg-info/SOURCES.txt'
+[2.705s] writing manifest file 'ros2_lidar.egg-info/SOURCES.txt'
+[2.730s] running build_ext
+[2.730s] Creating /home/pi/ros2_lidar/install/ros2_lidar/lib/python3.12/site-packages/ros2-lidar.egg-link (link to .)
+[2.731s] Installing pi_car script to /home/pi/ros2_lidar/install/ros2_lidar/bin
+[2.731s] 
+[2.732s] Installed /home/pi/ros2_lidar/build/ros2_lidar
+[2.732s] running symlink_data
+[2.732s] creating /home/pi/ros2_lidar/install/ros2_lidar/share/ament_index
+[2.732s] creating /home/pi/ros2_lidar/install/ros2_lidar/share/ament_index/resource_index
+[2.732s] creating /home/pi/ros2_lidar/install/ros2_lidar/share/ament_index/resource_index/packages
+[2.732s] symbolically linking /home/pi/ros2_lidar/build/ros2_lidar/resource/ros2_lidar -> /home/pi/ros2_lidar/install/ros2_lidar/share/ament_index/resource_index/packages
+[2.732s] symbolically linking /home/pi/ros2_lidar/build/ros2_lidar/package.xml -> /home/pi/ros2_lidar/install/ros2_lidar/share/ros2_lidar
+[2.732s] symbolically linking /home/pi/ros2_lidar/build/ros2_lidar/picar.urdf -> /home/pi/ros2_lidar/install/ros2_lidar/share/ros2_lidar
+[2.733s] symbolically linking /home/pi/ros2_lidar/build/ros2_lidar/slam_params.yaml -> /home/pi/ros2_lidar/install/ros2_lidar/share/ros2_lidar
+[2.849s] Invoked command in '/home/pi/ros2_lidar/build/ros2_lidar' returned '0': PYTHONPATH=/home/pi/ros2_lidar/build/ros2_lidar/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pi/ros2_lidar/install/ros2_lidar/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/pi/ros2_lidar/build/ros2_lidar/build --no-deps symlink_data

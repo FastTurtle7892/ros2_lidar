@@ -1,0 +1,1 @@
+/home/pi/ros2_lidar/src/ros2_lidar/setup.py
