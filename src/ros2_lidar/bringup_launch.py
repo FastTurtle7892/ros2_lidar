@@ -14,20 +14,6 @@ def generate_launch_description():
         launch_arguments={'serial_port': '/dev/ttyUSB0', 'frame_id': 'laser'}.items()
     )
 
-    # [추가] Lidar Odometry 실행 (휠 오도메트리 대신 사용)
-    # package 이름은 package.xml에 명시된 'lidar_odometry'를 사용합니다.
-    # lidar_odometry_node = Node(
-    #     package='lidar_odometry',
-    #     executable='lidar_odometry_node',
-    #     output='screen',
-    #     parameters=[{
-    #         'scan_topic_name': '/scan',
-    #         'odom_topic_name': '/odom',
-    #         'maximum_iterations': 10,           # [수정] 30 -> 10 (속도 향상)
-    #         'max_correspondence_distance': 0.3  # [수정] 1.0 -> 0.3 (회전 정밀도 향상)
-    #     }]
-    # )
-
     # [변경 후] rf2o_laser_odometry 노드 추가
     rf2o_node = Node(
         package='rf2o_laser_odometry',
