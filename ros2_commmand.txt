@@ -19,7 +19,7 @@ ros2 run rviz2 rviz2
 
 source /opt/ros/jazzy/setup.bash
 colcon build --symlink-install
-source ~/ros2_ws/install/setup.bash
+source ~/ros2_lidar/install/setup.bash
 ros2 launch bringup_launch.py
 
 source /opt/ros/jazzy/setup.bash
