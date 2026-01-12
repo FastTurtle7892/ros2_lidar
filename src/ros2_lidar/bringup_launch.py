@@ -24,7 +24,7 @@ def generate_launch_description():
             'laser_scan_topic': '/scan',      # 라이다 토픽 이름
             'odom_topic': '/odom',            # 발행할 오도메트리 토픽
             'publish_tf': True,               # TF(odom->base_link) 발행 여부 (필수: True)
-            'base_frame_id': 'base_link',     # 로봇 몸체 프레임
+            'base_frame_id': 'base_footprint',     # 로봇 몸체 프레임
             'odom_frame_id': 'odom',          # 오도메트리 프레임
             'init_pose_from_topic': '',       # 초기 위치 설정 (비워둠)
             'freq': 10.0                      # 발행 주파수 (Hz) -> 높을수록 반응이 빠름

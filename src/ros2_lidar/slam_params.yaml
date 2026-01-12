@@ -3,7 +3,7 @@ slam_toolbox:
     # 1. 핵심: 프레임 이름 맞추기
     odom_frame: odom
     map_frame: map
-    base_frame: base_link  # <--- 여기가 중요합니다! (기본값 base_footprint -> base_link로 변경)
+    base_frame: base_footprint  # <--- 여기가 중요합니다! (기본값 base_footprint -> base_link로 변경)
     scan_topic: /scan
 
     # 2. 성능 최적화 (Pi 5에 맞춤)
