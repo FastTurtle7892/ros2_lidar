@@ -46,6 +46,7 @@ def generate_launch_description():
         launch_arguments={
             'map': map_file_path,
             'use_sim_time': 'False', # 실물 로봇이므로 False
+			'autostart': 'True'
             # 'params_file': os.path.join(pkg_share, 'config', 'nav2_params.yaml') # 파라미터 파일이 있다면 주석 해제
         }.items()
     )
