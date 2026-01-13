@@ -1,11 +1,15 @@
 import os
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, ExecuteProcess
+from launch.actions import IncludeLaunchDescription, ExecuteProcess, RegisterEventHandler
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
+    # 패키지 경로를 자동으로 찾습니다.
+    pkg_share = get_package_share_directory('ros2_lidar')
+    
     # 1. 라이다 실행
     rplidar_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
@@ -14,9 +18,9 @@ def generate_launch_description():
         launch_arguments={'serial_port': '/dev/ttyUSB0', 'frame_id': 'laser'}.items()
     )
 
-    # [변경 후] rf2o_laser_odometry 노드 추가
+    # 2. RF2O Laser Odometry 실행
     rf2o_node = Node(
-        package='ros2_lidar',  # 이제 같은 패키지입니다!
+        package='ros2_lidar',
         executable='rf2o_laser_odometry_node',
         name='rf2o_laser_odometry',
         output='screen',
@@ -30,26 +34,31 @@ def generate_launch_description():
         }],
     )
 
-    # 2. SLAM (설정 파일 적용!)
-    # 설정 파일의 절대 경로를 만듭니다.
-    params_file = os.path.join(os.getenv('HOME'), 'my_robot', 'slam_params.yaml')
+    # 3. SLAM (설정 파일 경로 자동 탐색)
+    # CMakeLists.txt에서 config 폴더로 설치하도록 설정했습니다.
+    slam_config_path = os.path.join(pkg_share, 'config', 'slam_params.yaml')
     
     slam_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             FindPackageShare('slam_toolbox'), '/launch/online_async_launch.py'
         ]),
         launch_arguments={
-            'slam_params_file': params_file
+            'slam_params_file': slam_config_path
         }.items()
     )
 
-    # 3. 로봇 모델
-    urdf_file = 'picar.urdf'
-    # 주의: urdf_file 경로가 현재 실행 위치에 있어야 합니다.
-    # 만약 에러가 난다면 절대 경로로 수정하거나 launch 파일과 같은 폴더에 두세요.
-    with open(urdf_file, 'r') as infp:
-        robot_desc = infp.read()
+    # 4. 로봇 모델 (URDF 경로 자동 탐색)
+    urdf_file_path = os.path.join(pkg_share, 'urdf', 'picar.urdf')
     
+    # 파일을 읽어서 파라미터로 넘깁니다.
+    try:
+        with open(urdf_file_path, 'r') as infp:
+            robot_desc = infp.read()
+    except FileNotFoundError:
+        # 혹시 파일이 없을 경우를 대비해 로그를 남깁니다 (실행 시 에러 확인용)
+        print(f"ERROR: URDF file not found at {urdf_file_path}")
+        robot_desc = ""
+
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -57,19 +66,14 @@ def generate_launch_description():
         parameters=[{'robot_description': robot_desc}],
     )
 
-    # 4. 모터 드라이버 (pi_car.py)
-    # 주의: 이 파일도 경로가 맞아야 실행됩니다.
-    # motor_driver = ExecuteProcess(
-    #     cmd=['python3', 'pi_car.py'],
-    #     output='screen'
-    # )
+    # 5. 모터 드라이버 (pi_car.py)
     motor_driver = Node(
         package='ros2_lidar',
         executable='pi_car.py',
         output='screen'
     )
 
-    # 5. Foxglove Bridge (윈도우 연결용)
+    # 6. Foxglove Bridge (윈도우 연결용)
     foxglove_bridge = Node(
         package='foxglove_bridge',
         executable='foxglove_bridge',
@@ -83,8 +87,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         rplidar_launch,
-        # lidar_odometry_node, # 추가된 노드 등록
-        rf2o_node,  # <--- 여기에 추가!
+        rf2o_node,
         slam_launch,
         robot_state_publisher,
         motor_driver,
