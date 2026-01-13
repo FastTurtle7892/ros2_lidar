@@ -33,8 +33,10 @@ def generate_launch_description():
 
     # 2. SLAM (설정 파일 적용!)
     # 설정 파일의 절대 경로를 만듭니다.
-    params_file = os.path.join(os.getenv('HOME'), 'my_robot', 'slam_params.yaml')
-    
+    params_file = os.path.join(
+    FindPackageShare('ros2_lidar').find('ros2_lidar'),
+    'slam_params.yaml'
+)
     slam_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             FindPackageShare('slam_toolbox'), '/launch/online_async_launch.py'

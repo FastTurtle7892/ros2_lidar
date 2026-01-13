@@ -13,7 +13,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        (os.path.join('share', package_name), glob('*.launch.py')), # 런치 파일
+		(os.path.join('share', package_name), ['bringup_launch.py']),
         (os.path.join('share', package_name), glob('*.urdf')),      # URDF 파일
         (os.path.join('share', package_name), glob('*.yaml')),      # 설정 파일
     ],
