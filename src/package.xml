@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<!-- <?xml version="1.0"?>
 <package>
   <name>rf2o_laser_odometry</name>
   <version>0.1.0</version>
@@ -34,6 +34,36 @@
   <run_depend>cmake_modules</run_depend>
   <run_depend>sensor_msgs</run_depend>
   <run_depend>tf2_geometry_msgs</run_depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package> -->
+
+
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>ros2_lidar</name>
+  <version>0.0.1</version>
+  <description>ROS 2 Lidar Project (Integrated)</description>
+  <maintainer email="user@todo.todo">User</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>eigen3_cmake_module</build_depend>
+  <build_depend>Eigen3</build_depend>
+  <build_depend>rclcpp</build_depend>
+  <build_depend>tf2</build_depend>
+  <build_depend>tf2_ros</build_depend>
+  <build_depend>tf2_geometry_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+
+  <exec_depend>rclpy</exec_depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>

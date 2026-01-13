@@ -16,18 +16,17 @@ def generate_launch_description():
 
     # [변경 후] rf2o_laser_odometry 노드 추가
     rf2o_node = Node(
-        package='rf2o_laser_odometry',
+        package='ros2_lidar',  # 이제 같은 패키지입니다!
         executable='rf2o_laser_odometry_node',
         name='rf2o_laser_odometry',
         output='screen',
         parameters=[{
-            'laser_scan_topic': '/scan',      # 라이다 토픽 이름
-            'odom_topic': '/odom',            # 발행할 오도메트리 토픽
-            'publish_tf': True,               # TF(odom->base_link) 발행 여부 (필수: True)
-            'base_frame_id': 'base_footprint',     # 로봇 몸체 프레임
-            'odom_frame_id': 'odom',          # 오도메트리 프레임
-            'init_pose_from_topic': '',       # 초기 위치 설정 (비워둠)
-            'freq': 10.0                      # 발행 주파수 (Hz) -> 높을수록 반응이 빠름
+            'laser_scan_topic': '/scan',
+            'odom_topic': '/odom',
+            'publish_tf': True,
+            'base_frame_id': 'base_footprint',
+            'odom_frame_id': 'odom',
+            'freq': 10.0
         }],
     )
 
@@ -60,8 +59,13 @@ def generate_launch_description():
 
     # 4. 모터 드라이버 (pi_car.py)
     # 주의: 이 파일도 경로가 맞아야 실행됩니다.
-    motor_driver = ExecuteProcess(
-        cmd=['python3', 'pi_car.py'],
+    # motor_driver = ExecuteProcess(
+    #     cmd=['python3', 'pi_car.py'],
+    #     output='screen'
+    # )
+    motor_driver = Node(
+        package='ros2_lidar',
+        executable='pi_car.py',
         output='screen'
     )
 
