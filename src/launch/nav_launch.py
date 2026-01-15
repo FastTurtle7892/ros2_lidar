@@ -79,7 +79,7 @@ def generate_launch_description():
         package='ros2_lidar',
         executable='pi_car.py',
         output='screen',
-		remappings=[('/cmd_vel', '/cmd_vel_nav')]  # 만약 Nav2가 cmd_vel_nav를 쓴다면 추가
+        #remappings=[('/cmd_vel', '/cmd_vel_nav')]  # 만약 Nav2가 cmd_vel_nav를 쓴다면 추가
     )
 
     # 7. RViz (라즈베리 파이에서는 주석 처리)
