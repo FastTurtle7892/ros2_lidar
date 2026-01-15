@@ -9,10 +9,10 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
     pkg_share = get_package_share_directory('ros2_lidar')
     
-    # 맵 파일 경로 설정
+    # 맵 파일 경로 (my_map.yaml)
     map_file_path = os.path.join(pkg_share, 'maps', 'my_map.yaml')
 
-    # 1. 라이다 실행 (Hardware)
+    # 1. 라이다 센서 실행
     rplidar_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             FindPackageShare('rplidar_ros'), '/launch/rplidar.launch.py'
@@ -20,7 +20,7 @@ def generate_launch_description():
         launch_arguments={'serial_port': '/dev/ttyUSB0', 'frame_id': 'laser'}.items()
     )
 
-    # 2. RF2O Laser Odometry 실행 (Localization Base)
+    # 2. RF2O 오도메트리 (위치 추정 기초)
     rf2o_node = Node(
         package='ros2_lidar',
         executable='rf2o_laser_odometry_node',
@@ -37,17 +37,16 @@ def generate_launch_description():
         }],
     )
 
-    # 3. [핵심 변경] Nav2 Bringup 실행 (Navigation)
-    # SLAM 대신 맵을 불러오고 경로를 생성하는 Nav2를 실행합니다.
+    # 3. Nav2 내비게이션 (맵 서버, 경로 탐색)
     nav2_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             FindPackageShare('nav2_bringup'), '/launch/bringup_launch.py'
         ]),
         launch_arguments={
             'map': map_file_path,
-            'use_sim_time': 'False', # 실물 로봇이므로 False
-			'autostart': 'True'
-            # 'params_file': os.path.join(pkg_share, 'config', 'nav2_params.yaml') # 파라미터 파일이 있다면 주석 해제
+            'use_sim_time': 'False',
+            'autostart': 'True',
+            'params_file': os.path.join(pkg_share, 'config', 'nav2_params.yaml')
         }.items()
     )
 
@@ -66,30 +65,38 @@ def generate_launch_description():
         parameters=[{'robot_description': robot_desc}],
     )
 
-    # 5. 모터 드라이버
+    # 5. Joint State Publisher (바퀴 연결 오류 해결)
+    joint_state_publisher = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher',
+        output='screen',
+        parameters=[{'use_gui': False}],
+    )
+
+    # 6. 모터 드라이버
     motor_driver = Node(
         package='ros2_lidar',
         executable='pi_car.py',
-        output='screen'
-    )
-
-    # 6. Foxglove Bridge (모니터링)
-    foxglove_bridge = Node(
-        package='foxglove_bridge',
-        executable='foxglove_bridge',
         output='screen',
-        parameters=[{
-            'port': 8765,
-            'address': '0.0.0.0',
-            'topic_whitelist': ['.*']
-        }]
+		remappings=[('/cmd_vel', '/cmd_vel_nav')]  # 만약 Nav2가 cmd_vel_nav를 쓴다면 추가
     )
 
+    # 7. RViz (라즈베리 파이에서는 주석 처리)
+    # rviz_node = Node(
+    #     package='rviz2',
+    #     executable='rviz2',
+    #     name='rviz2',
+    #     output='screen',
+    # )
+
+    # === [중요] 모든 노드를 리스트에 포함해야 합니다 ===
     return LaunchDescription([
-        rplidar_launch,
-        rf2o_node,
-        nav2_launch,   # SLAM 대신 이게 들어감
-        robot_state_publisher,
-        motor_driver,
-        foxglove_bridge
+        rplidar_launch,        # 라이다
+        rf2o_node,             # 오도메트리
+        nav2_launch,           # 내비게이션(맵)
+        robot_state_publisher, # 로봇 모델
+        joint_state_publisher, # 관절 상태 (바퀴)
+        motor_driver,          # 모터
+        # rviz_node            # 화면 (PC에서 실행)
     ])

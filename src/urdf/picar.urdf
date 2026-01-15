@@ -16,12 +16,6 @@
   <material name="gold">
     <color rgba="1 0.84 0 1"/>
   </material>
-  <link name="base_footprint"/>
-  <joint name="base_joint" type="fixed">
-    <parent link="base_footprint"/>
-    <child link="base_link"/>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-  </joint>
   <link name="base_link">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0.06"/>
