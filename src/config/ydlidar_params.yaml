@@ -1,0 +1,23 @@
+ydlidar_ros2_driver_node:
+  ros__parameters:
+    port: /dev/ttyUSB0
+    frame_id: laser
+    ignore_array: ""
+    baudrate: 128000      # X4 모델은 128000 필수
+    lidar_type: 1         # 1: 2D LiDAR
+    device_type: 0        # 0: Serial
+    sample_rate: 5
+    abnormal_check_count: 4
+    resolution_fixed: true
+    reversion: false
+    inverted: true        # X4는 보통 True로 설정 (반시계 방향)
+    auto_reconnect: true
+    isSingleChannel: true
+    intensity: false
+    support_motor_dtr: true
+    angle_min: -180.0
+    angle_max: 180.0
+    range_min: 0.1
+    range_max: 12.0
+    frequency: 7.0
+    invalid_range_is_inf: false
