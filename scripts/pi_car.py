@@ -66,10 +66,10 @@ class PiCarDriver(Node):
     def listener_callback(self, msg):
         self.current_linear_x = msg.linear.x
         self.current_angular_z = msg.angular.z
-
+        SPEED_SCALE = 800
         # 믹싱 알고리즘
-        left_speed = (msg.linear.x + msg.angular.z) * 100
-        right_speed = (msg.linear.x - msg.angular.z) * 100
+        left_speed = (msg.linear.x + msg.angular.z) * SPEED_SCALE
+        right_speed = (msg.linear.x - msg.angular.z) * SPEED_SCALE
 
         self.control_motor('A', left_speed)
         self.control_motor('B', right_speed)
