@@ -3,9 +3,6 @@
 **Raspberry Pi 5**와 **RPLidar**, **ROS 2**를 활용한 2D 자율 주행 로봇 프로젝트입니다.  
 엔코더 없이 라이다 오도메트리(**RF2O**)를 활용하여 **SLAM(지도 작성)**과 **Navigation2(자율 주행)**를 수행합니다.
 
-![Robot Main Image](insert_robot_image_here.png)
-*(이곳에 로봇의 실제 사진을 넣어주세요)*
-
 ---
 
 ## 하드웨어 구성 (Hardware Setup)
