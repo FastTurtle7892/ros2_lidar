@@ -14,7 +14,7 @@
 * **Chassis:** 4-Wheel Differential Drive (TT Motor)
 * **Power:** 18650 Battery (High Current)
 
-### 🔌 GPIO 핀 맵 (Pinout - Board Mode)
+### GPIO 핀 맵 (Pinout - Board Mode)
 | 구분 | 물리 핀 번호 (Physical Pin) | 역할 |
 | :--- | :---: | :--- |
 | **Left Motor (IN1, IN2)** | 37, 40 | 방향 제어 |
