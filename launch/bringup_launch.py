@@ -1,26 +1,40 @@
 import os
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, ExecuteProcess, RegisterEventHandler
+from launch.actions import IncludeLaunchDescription, RegisterEventHandler
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
-    # 패키지 경로를 자동으로 찾습니다.
     pkg_share = get_package_share_directory('ros2_lidar')
     
-    # 1. 라이다 실행
+    # 1. RPLidar 실행 (A1 모델 기준)
+    # rplidar_ros 패키지 내의 런치 파일 사용
     rplidar_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
-            FindPackageShare('rplidar_ros'), '/launch/rplidar.launch.py'
+            FindPackageShare('rplidar_ros'), '/launch/rplidar_a1_launch.py'
         ]),
-        launch_arguments={'serial_port': '/dev/ttyUSB0', 'frame_id': 'laser'}.items()
+        launch_arguments={
+            'serial_port': '/dev/ttyUSB0',
+            'frame_id': 'laser_frame'
+        }.items()
     )
 
-    # 2. RF2O Laser Odometry 실행
+    # 1-1. TF (base_link -> laser_frame)
+    # 라이다 위치를 알려주는 정적 TF
+    static_tf = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='static_tf_pub_laser',
+        arguments=['0', '0', '0.0', '0', '0', '0', 'base_link', 'laser_frame'],
+        output='screen'
+    )
+
+    # 2. RF2O Laser Odometry (외부 패키지 사용)
+    # [수정 포인트] package='rf2o_laser_odometry'
     rf2o_node = Node(
-        package='ros2_lidar',
+        package='rf2o_laser_odometry',
         executable='rf2o_laser_odometry_node',
         name='rf2o_laser_odometry',
         output='screen',
@@ -30,34 +44,29 @@ def generate_launch_description():
             'publish_tf': True,
             'base_frame_id': 'base_link',
             'odom_frame_id': 'odom',
-			'init_pose_from_topic': '',
+            'init_pose_from_topic': '',
             'freq': 10.0
         }],
     )
 
-    # 3. SLAM (설정 파일 경로 자동 탐색)
-    # CMakeLists.txt에서 config 폴더로 설치하도록 설정했습니다.
+    # 3. SLAM (Sim Time 꺼짐)
     slam_config_path = os.path.join(pkg_share, 'config', 'slam_params.yaml')
-    
     slam_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             FindPackageShare('slam_toolbox'), '/launch/online_async_launch.py'
         ]),
         launch_arguments={
-            'slam_params_file': slam_config_path
+            'slam_params_file': slam_config_path,
+            'use_sim_time': 'false'
         }.items()
     )
 
-    # 4. 로봇 모델 (URDF 경로 자동 탐색)
+    # 4. 로봇 모델 (URDF)
     urdf_file_path = os.path.join(pkg_share, 'urdf', 'picar.urdf')
-    
-    # 파일을 읽어서 파라미터로 넘깁니다.
     try:
         with open(urdf_file_path, 'r') as infp:
             robot_desc = infp.read()
     except FileNotFoundError:
-        # 혹시 파일이 없을 경우를 대비해 로그를 남깁니다 (실행 시 에러 확인용)
-        print(f"ERROR: URDF file not found at {urdf_file_path}")
         robot_desc = ""
 
     robot_state_publisher = Node(
@@ -67,30 +76,29 @@ def generate_launch_description():
         parameters=[{'robot_description': robot_desc}],
     )
 
-    # 5. 모터 드라이버 (pi_car.py)
+    # 5. 모터 드라이버
     motor_driver = Node(
         package='ros2_lidar',
         executable='pi_car.py',
         output='screen'
     )
 
-    # 6. Foxglove Bridge (윈도우 연결용)
-    foxglove_bridge = Node(
-        package='foxglove_bridge',
-        executable='foxglove_bridge',
+    # 6. RViz2 실행 (Foxglove 대신 실행)
+    # 저장된 rviz 설정 파일이 있다면 경로를 지정해주세요. (없으면 기본 실행)
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
         output='screen',
-        parameters=[{
-            'port': 8765,
-            'address': '0.0.0.0',
-            'topic_whitelist': ['.*']
-        }]
+        # arguments=['-d', os.path.join(pkg_share, 'config', 'my_config.rviz')] 
     )
 
     return LaunchDescription([
+        static_tf,
         rplidar_launch,
         rf2o_node,
         slam_launch,
         robot_state_publisher,
         motor_driver,
-        foxglove_bridge
+        rviz_node
     ])
