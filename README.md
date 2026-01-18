@@ -54,7 +54,7 @@ source install/setup.bash
 sudo chmod 666 /dev/ttyUSB0
 ```
 ### 2. SLAM(지도작성)
-![alt text](image.png)
+![alt text](slam.png)
 ```bash
 ros2 launch ros2_lidar bringup_launch.py
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
@@ -62,7 +62,7 @@ ros2 run nav2_map_server map_saver_cli -f ~/my_map
 ```
 
 ### 3. Navigation (자율 주행)
-![alt text](image.png)
+![alt text](nav.png)
 ```bash
 ros2 launch ros2_lidar nav_launch.py
 ```
