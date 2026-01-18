@@ -68,6 +68,7 @@ ros2 launch ros2_lidar nav_launch.py
 ```
 
 ### 4. 프로젝트 구조
+```bash
 ros2_lidar/
 ├── config/
 │   ├── nav2_params.yaml    # 내비게이션 파라미터 (MPPI Controller, Costmap)
@@ -83,3 +84,4 @@ ros2_lidar/
 ├── urdf/
 │   └── picar.urdf          # 로봇 모델링 (Lidar, Chassis, Wheels)
 └── package.xml
+```
